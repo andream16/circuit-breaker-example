@@ -12,8 +12,9 @@ by default.
 `server`'s status codes can be toggled to `5xx` and back to `200` by
 hitting `/circuit/open` and `/circuit/close`.
 
-TL;DR when the circuit is open it means we'll let requests go to the origin; 
-when it's close we'll return the latest response without hitting the origin.
+TL;DR when the circuit is closed it means we'll let requests go to the origin; 
+when it's open we'll return the latest response without hitting the origin. 
+We'll set the circuit to half-open to let few requests in to check the status of the origin.
 
 # run
 

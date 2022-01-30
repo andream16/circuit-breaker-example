@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  grafana:
+    build:
+      context: .
+      dockerfile: dockerfiles/grafana/Dockerfile
+    ports:
+      - '3000:3000'
+    volumes:
+      - grafana-storage:/var/lib/grafana
+  prometheus:
+    build:
+      context: .
+      dockerfile: dockerfiles/prometheus/Dockerfile
+    ports:
+      - '9090:9090'
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+  server:
+    build:
+      context: .
+      dockerfile: dockerfiles/server/Dockerfile
+    ports:
+      - '8080:8080'
+  client:
+    build:
+      context: .
+      dockerfile: dockerfiles/client/Dockerfile
+    ports:
+      - '8081:8080'
+    depends_on:
+      - server
+
+volumes:
+  grafana-storage:
